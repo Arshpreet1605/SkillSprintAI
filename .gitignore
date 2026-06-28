@@ -1,0 +1,34 @@
+# Environment variables
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.venv/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Streamlit
+.streamlit/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+Thumbs.db
