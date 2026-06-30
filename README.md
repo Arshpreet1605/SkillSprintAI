@@ -97,6 +97,12 @@ SkillSprintAI/
 ---
 
 ## 📸 Screenshots
+<img width="1854" height="868" alt="image" src="https://github.com/user-attachments/assets/f6a46a95-533a-4dde-b723-65bf75c64281" />
+<img width="1754" height="846" alt="image" src="https://github.com/user-attachments/assets/d0c34213-96e0-4c1d-849e-fbadc7075bb5" />
+<img width="1705" height="847" alt="image" src="https://github.com/user-attachments/assets/d9d57fad-9cff-4998-acbd-01439a253997" />
+<img width="1677" height="857" alt="image" src="https://github.com/user-attachments/assets/b919c6f6-fb8d-4274-b837-86137cd1a111" />
+
+
 
 > Screenshots will be added as the project progresses.
 
