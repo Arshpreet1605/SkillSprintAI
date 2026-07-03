@@ -13,7 +13,6 @@ Responsibilities (Sprint 1 scope):
 
 import streamlit as st
 from app.utils.resume_parser import extract_resume_text
-from app.utils.gemini_client import generate_interview_questions, evaluate_interview_answers
 from app.config.settings import (
     APP_NAME,
     APP_TAGLINE,
@@ -155,81 +154,39 @@ def _render_selectors() -> None:
 
 
 # ── Start Assessment button ──────────────────────────────────────────────────
+
 def _render_start_button() -> None:
     st.markdown("<br>", unsafe_allow_html=True)
 
+    # Button is disabled unless: valid file uploaded AND both dropdowns have
+    # a real selection (they always do once enabled, since options are non-empty).
     resume_valid = st.session_state.get("resume_valid", False)
     role         = st.session_state.get("selected_role", "")
     experience   = st.session_state.get("selected_experience", "")
     ready        = resume_valid and bool(role) and bool(experience)
 
-    # Only show the Start button if the interview hasn't started yet
-    if "interview_questions" not in st.session_state:
-        clicked = st.button(
-            "🚀  Start Assessment",
-            type="primary",
-            key="start_assessment_btn",
-            disabled=not ready,
-        )
+    clicked = st.button(
+        "🚀  Start Assessment",
+        type="primary",
+        key="start_assessment_btn",
+        disabled=not ready,
+    )
 
-        if clicked:
-            resume_text = st.session_state.get("resume_text", "")
-            if not resume_valid or not resume_text:
-                st.warning("⚠️ Please upload your resume before starting the assessment.")
-            else:
-                with st.spinner("Generating your interview questions..."):
-                    questions = generate_interview_questions(resume_text, role, experience)
-                st.session_state["interview_questions"] = questions
-                st.session_state["current_q_index"] = 0
-                st.session_state["qa_pairs"] = []
-                st.rerun()
+    if clicked:
+        # Double-check state (guard against any edge case)
+        resume_file = st.session_state.get("resume_file")
+        if not resume_valid or resume_file is None:
+            st.warning(
+                "⚠️ Please upload your resume before starting the assessment."
+            )
+        else:
+            st.info(
+                f"✅ Ready to begin!\n\n"
+                f"**Role:** {role}  |  **Level:** {experience}\n\n"
+                f"*(AI interview engine will be wired in Sprint 2.)*"
+            )
 
 
-def _render_interview_flow() -> None:
-    """Shows one question at a time, collects answers, then shows results."""
-    if "interview_questions" not in st.session_state:
-        return  # interview hasn't started yet
-
-    questions = st.session_state["interview_questions"]
-    index = st.session_state["current_q_index"]
-
-    # ── Interview finished — show results ──────────────────────────────
-    if index >= len(questions):
-        st.markdown("---")
-        st.subheader("📊 Interview Summary")
-
-        if "evaluation_result" not in st.session_state:
-            resume_text = st.session_state.get("resume_text", "")
-            role = st.session_state.get("selected_role", "")
-            experience = st.session_state.get("selected_experience", "")
-            qa_pairs = st.session_state.get("qa_pairs", [])
-
-            with st.spinner("Evaluating your answers..."):
-                result = evaluate_interview_answers(resume_text, role, experience, qa_pairs)
-            st.session_state["evaluation_result"] = result
-
-        st.markdown(st.session_state["evaluation_result"])
-
-        if st.button("🔄 Start New Assessment"):
-            for key in ["interview_questions", "current_q_index", "qa_pairs", "evaluation_result"]:
-                st.session_state.pop(key, None)
-            st.rerun()
-        return
-
-    # ── Show current question ──────────────────────────────────────────
-    st.markdown("---")
-    st.subheader(f"Question {index + 1} of {len(questions)}")
-    st.write(questions[index])
-
-    answer = st.text_area("Your answer", key=f"answer_{index}")
-
-    if st.button("Submit Answer", key=f"submit_{index}"):
-        st.session_state["qa_pairs"].append({
-            "question": questions[index],
-            "answer": answer,
-        })
-        st.session_state["current_q_index"] += 1
-        st.rerun()
 # ── Public render function ────────────────────────────────────────────────────
 
 def render_home_page() -> None:
@@ -237,9 +194,7 @@ def render_home_page() -> None:
     Main entry-point called by main.py when the Home nav item is active.
     Composes all sections of the landing page in order.
     """
-    
     _render_hero()
     _render_resume_upload()
     _render_selectors()
     _render_start_button()
-    _render_interview_flow()
