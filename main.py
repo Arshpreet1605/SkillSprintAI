@@ -42,6 +42,7 @@ elif "About" in active_page:
     render_about_page()
 elif "Contact" in active_page:
     render_contact_page()
+
 # main.py
 
 
@@ -81,3 +82,6 @@ elif "Contact" in active_page:
 #         with st.expander("Preview extracted text"):
 #             st.text(resume_text)
 #         # next: pass resume_text into your Gemini call
+
+
+
