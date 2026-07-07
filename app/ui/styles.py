@@ -34,12 +34,59 @@ html, body {
     background-color: var(--bg-dark) !important;
     color: var(--text-primary) !important;
 }
-/* Apply font family broadly without touching color, so widget text is unaffected */
-* { font-family: 'Inter', sans-serif !important; }
+/* Apply Inter to text elements — span & bare button excluded to protect icon glyphs */
+body, p, div, h1, h2, h3, h4, h5, h6,
+input, textarea, select, label, a,
+.stMarkdown, .stText, .stTitle, .stHeader, .stSubheader, .stCaption,
+.stButton > button, .stTextInput > div > div > input,
+.stTextArea > div > div > textarea, .stSelectbox > div > div,
+.stMultiSelect > div > div, .stRadio, .stCheckbox,
+.stSlider, .stNumberInput, .stDateInput, .stTimeInput,
+.stAlert, .stInfo, .stSuccess, .stWarning, .stError,
+.stTabs, .stTab,
+.stDataFrame, .stTable, .stMetric,
+[data-testid="stMarkdownContainer"],
+[data-testid="stMetricValue"],
+[data-testid="stMetricLabel"] {
+    font-family: 'Inter', sans-serif !important;
+}
+/* Preserve Material Icons / Streamlit icon fonts — collapse button gets highest specificity */
+.material-icons,
+.material-icons-outlined,
+.material-icons-round,
+.material-icons-sharp,
+.material-symbols-outlined,
+.material-symbols-rounded,
+.material-symbols-sharp {
+    font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
+}
+/* Sidebar collapse button: override any inherited Inter with the icon font */
+button[data-testid="collapsedControl"],
+button[data-testid="collapsedControl"] span,
+[data-testid="collapsedControl"],
+[data-testid="collapsedControl"] span {
+    font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
+}
 .stApp { background-color: var(--bg-dark) !important; }
 
 /* ── Hide Streamlit Branding ─────────────────────────────────────────── */
-#MainMenu, footer, header { visibility: hidden; }
+/* Hide Streamlit branding only */
+#MainMenu,
+footer {
+    visibility: hidden;
+}
+
+/* Keep the header visible */
+header {
+    background: transparent !important;
+    border: none !important;
+    height: auto !important;
+}
+
+/* Hide only the Deploy button */
+.stDeployButton {
+    display: none !important;
+}
 .stDeployButton { display: none; }
 
 /* ── Streamlit Main Block Padding ────────────────────────────────────── */

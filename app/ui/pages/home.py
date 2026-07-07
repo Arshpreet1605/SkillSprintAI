@@ -11,6 +11,7 @@ Responsibilities (Sprint 1 scope):
   - "Start Assessment" button with validation feedback
 """
 
+from streamlit import delta_generator_singletons
 import streamlit as st
 from app.utils.resume_parser import extract_resume_text
 from app.utils.gemini_client import generate_interview_questions, evaluate_interview_answers
@@ -19,6 +20,8 @@ from app.config.settings import (
     APP_TAGLINE,
     APP_ICON,
     ROLE_OPTIONS,
+    COMPANY_OPTIONS,
+    INTERVIEW_PERSPECTIVES,
     EXPERIENCE_OPTIONS,
     ALLOWED_FILE_TYPES,
     MAX_FILE_SIZE_MB,
@@ -147,7 +150,30 @@ def _render_selectors() -> None:
             help="Upload a valid resume to enable this.",
             disabled=not resume_valid,
         )
+# ---------------- Row 2 ----------------
+    st.selectbox(
+        label="Target Company",
+        options=COMPANY_OPTIONS,
+        key="selected_company",
+        help="Choose the company you are preparing for.",
+        disabled=not resume_valid,
+    )
+    st.markdown("### 🎤 Interview Perspectives")
 
+    selected_perspectives = []
+
+    cols = st.columns(3)
+
+    for i, perspective in enumerate(INTERVIEW_PERSPECTIVES):
+        with cols[i % 3]:
+            if st.checkbox(
+                perspective,
+                key=f"perspective_{perspective}",
+                disabled=not resume_valid,
+            ):
+                selected_perspectives.append(perspective)
+
+    st.session_state["selected_perspectives"] = selected_perspectives
     if not resume_valid:
         st.caption("⬆️ Upload a valid PDF resume above to enable the dropdowns.")
 
@@ -161,7 +187,15 @@ def _render_start_button() -> None:
     resume_valid = st.session_state.get("resume_valid", False)
     role         = st.session_state.get("selected_role", "")
     experience   = st.session_state.get("selected_experience", "")
-    ready        = resume_valid and bool(role) and bool(experience)
+    company = st.session_state.get("selected_company", "")
+    perspectives = st.session_state.get("selected_perspectives", [])
+    ready = (
+    resume_valid
+    and bool(role)
+    and bool(experience)
+    and bool(company)
+    and len(perspectives) > 0
+)
 
     # Only show the Start button if the interview hasn't started yet
     if "interview_questions" not in st.session_state:
@@ -173,12 +207,19 @@ def _render_start_button() -> None:
         )
 
         if clicked:
+            st.session_state.pop("structured_result", None)
             resume_text = st.session_state.get("resume_text", "")
             if not resume_valid or not resume_text:
                 st.warning("⚠️ Please upload your resume before starting the assessment.")
             else:
                 with st.spinner("Generating your interview questions..."):
-                    questions = generate_interview_questions(resume_text, role, experience)
+                    questions = generate_interview_questions(
+                        resume_text,
+                        role,
+                        experience,
+                        company,
+                        perspectives,
+                    )               
                 st.session_state["interview_questions"] = questions
                 st.session_state["current_q_index"] = 0
                 st.session_state["qa_pairs"] = []
@@ -195,25 +236,21 @@ def _render_interview_flow() -> None:
 
     # ── Interview finished — show results ──────────────────────────────
     if index >= len(questions):
-        st.markdown("---")
-        st.subheader("📊 Interview Summary")
-
-        if "evaluation_result" not in st.session_state:
+        if "structured_result" not in st.session_state:
             resume_text = st.session_state.get("resume_text", "")
             role = st.session_state.get("selected_role", "")
             experience = st.session_state.get("selected_experience", "")
+            company = st.session_state.get("selected_company", "")
+            perspectives = st.session_state.get("selected_perspectives", [])
             qa_pairs = st.session_state.get("qa_pairs", [])
 
             with st.spinner("Evaluating your answers..."):
-                result = evaluate_interview_answers(resume_text, role, experience, qa_pairs)
-            st.session_state["evaluation_result"] = result
+                result = evaluate_interview_answers(resume_text, role, experience,company,perspectives, qa_pairs)
+            st.session_state["structured_result"] = result
 
-        st.markdown(st.session_state["evaluation_result"])
-
-        if st.button("🔄 Start New Assessment"):
-            for key in ["interview_questions", "current_q_index", "qa_pairs", "evaluation_result"]:
-                st.session_state.pop(key, None)
-            st.rerun()
+        # Redirect directly to the newly generated Performance Dashboard page
+        st.session_state["nav_selection"] = "📊  Dashboard"
+        st.rerun()
         return
 
     # ── Show current question ──────────────────────────────────────────
