@@ -26,9 +26,10 @@ st.set_page_config(
 # ── Internal imports (after set_page_config) ──────────────────────────────────
 from app.ui.styles import CUSTOM_CSS
 from app.ui.components.sidebar import render_sidebar
-from app.ui.pages.home import render_home_page
-from app.ui.pages.about import render_about_page
-from app.ui.pages.contact import render_contact_page
+from app.ui.pages.home      import render_home_page
+from app.ui.pages.dashboard import render_dashboard_page
+from app.ui.pages.about     import render_about_page
+from app.ui.pages.contact   import render_contact_page
 
 # ── Inject global CSS ─────────────────────────────────────────────────────────
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
@@ -38,6 +39,8 @@ active_page = render_sidebar()
 
 if "Home" in active_page:
     render_home_page()
+elif "Dashboard" in active_page:
+    render_dashboard_page()
 elif "About" in active_page:
     render_about_page()
 elif "Contact" in active_page:
