@@ -1,122 +1,271 @@
-# ⚡ SkillSprint AI
+<div align="center">
 
-<p align="center">
-  <strong>AI-Powered Technical Interview Simulation & Skill Assessment Platform</strong>
-</p>
+# ⚡ SkillSprintAI
 
-<p align="center">
-Helping students and professionals prepare for technical interviews through AI-driven resume analysis, personalized interview simulations, and intelligent performance evaluation.
-</p>
+### AI-Powered Technical Interview Simulation & Skill Assessment Platform
 
----
+Generate company-specific mock interviews, answer AI-generated questions, receive detailed feedback, and visualize your interview performance through an interactive analytics dashboard.
 
-## 📖 Overview
+<img src="https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Streamlit-1.x-red?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Google-Gemini%202.5%20Flash-green?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge"/>
 
-SkillSprint AI is an AI-powered interview preparation platform designed to bridge the gap between learning and real-world technical interviews.
-
-The platform analyzes a candidate's resume, understands their skills and experience, generates personalized interview questions, evaluates responses, and provides actionable feedback to help users improve their interview performance.
-
-This project is being developed in multiple agile sprints.
+</div>
 
 ---
 
-## ✨ Current Features (Sprint 1)
+# 📖 Overview
 
-- 🎨 Modern responsive Streamlit interface
-- 🌙 Professional dark theme UI
-- 📄 Resume upload interface
-- 🎯 Assessment configuration section
-- 📑 Modular project architecture
-- 📌 Sidebar navigation
-- ℹ️ About page
-- 📬 Contact page
-- 🔧 Git & GitHub version control
+SkillSprintAI is an AI-powered interview preparation platform that simulates realistic technical interviews tailored to a candidate's:
 
----
+- Resume
+- Target Job Role
+- Experience Level
+- Target Company
+- Selected Interview Perspectives
 
-## 🚀 Planned Features
+Instead of asking generic interview questions, SkillSprintAI creates personalized interview experiences similar to those conducted by leading technology companies.
 
-- 📄 Resume Parsing
-- 🧠 AI Resume Analysis
-- 🎯 Skill Extraction
-- 💼 Role-Based Interview Questions
-- 🤖 AI Interview Simulation
-- 📊 Performance Evaluation
-- 📈 Interview Analytics Dashboard
-- 📚 Interview History
-- 🔐 User Authentication
-- ☁️ Cloud Deployment
+After the interview, the platform performs an AI-powered evaluation and displays an interactive performance dashboard with detailed analytics, skill scores, and hiring recommendations.
 
 ---
 
-## 🛠️ Tech Stack
+# ✨ Features
 
-### Frontend
-- Streamlit
+## 📄 Resume Analysis
 
-### Backend
-- Python
-
-### AI (Planned)
-- OpenAI API / Gemini API
-- Prompt Engineering
-
-### Libraries
-- Streamlit
-- Pandas
-- NumPy
-- Plotly
-- PyMuPDF (Planned)
-
-### Version Control
-- Git
-- GitHub
+- PDF Resume Upload
+- Resume Text Extraction
+- Personalized Interview Generation
 
 ---
 
-## 📂 Project Structure
+## 🎯 Interview Configuration
 
-```text
-SkillSprintAI/
-│
-├── app/
-│   ├── config/
-│   ├── ui/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   └── styles.py
-│   │
-│   └── ...
-│
-├── main.py
-├── requirements.txt
-├── README.md
-└── .gitignore
+Customize interviews using:
+
+- Target Job Role
+- Experience Level
+- Target Company
+
+Examples:
+
+- Google
+- Microsoft
+- Amazon
+- Meta
+- NVIDIA
+- Oracle
+- Infosys
+- Deloitte
+- TCS
+- Flipkart
+- and many more...
+
+---
+
+## 🎤 Multiple Interview Perspectives
+
+Choose one or multiple interview rounds:
+
+- Technical
+- HR
+- Behavioral
+- AI / Machine Learning
+- System Design
+
+Questions are intelligently distributed across the selected interview perspectives.
+
+---
+
+## 🤖 AI Interview Generation
+
+Powered by **Google Gemini 2.5 Flash**
+
+Interview questions are generated using:
+
+- Resume
+- Job Role
+- Company
+- Experience
+- Interview Perspective
+
+Each interview is unique.
+
+---
+
+## 📝 AI Evaluation
+
+After completing the interview, Gemini evaluates:
+
+- Technical Skills
+- Communication
+- Problem Solving
+- Confidence
+- Role Match
+
+The evaluation also includes:
+
+- Overall Score
+- Question-wise Scores
+- Hiring Recommendation
+- Strengths
+- Weaknesses
+- Personalized Next Steps
+
+---
+
+## 📊 Performance Dashboard
+
+Interactive dashboard including:
+
+- KPI Cards
+- Skill Progress Bars
+- Radar Chart
+- Question-wise Performance
+- Hiring Recommendation
+- AI Feedback
+- Performance Summary
+
+---
+
+# 🖥 Screenshots
+
+> Add screenshots here after deployment.
+
+### 🏠 Home Page
+
+```
+images/home.png
 ```
 
 ---
 
-## 📸 Screenshots
-<img width="1854" height="868" alt="image" src="https://github.com/user-attachments/assets/f6a46a95-533a-4dde-b723-65bf75c64281" />
-<img width="1754" height="846" alt="image" src="https://github.com/user-attachments/assets/d0c34213-96e0-4c1d-849e-fbadc7075bb5" />
-<img width="1705" height="847" alt="image" src="https://github.com/user-attachments/assets/d9d57fad-9cff-4998-acbd-01439a253997" />
-<img width="1677" height="857" alt="image" src="https://github.com/user-attachments/assets/b919c6f6-fb8d-4274-b837-86137cd1a111" />
+### 🎤 Interview Setup
 
-
-
-> Screenshots will be added as the project progresses.
+```
+images/interview_setup.png
+```
 
 ---
 
-## ⚙️ Installation
+### 💬 AI Interview
+
+```
+images/interview.png
+```
+
+---
+
+### 📊 Dashboard
+
+```
+images/dashboard.png
+```
+
+---
+
+### 📈 Radar Chart
+
+```
+images/radar_chart.png
+```
+
+---
+
+# 🏗 Project Architecture
+
+```
+                Resume Upload
+                      │
+                      ▼
+              Resume Parser
+                      │
+                      ▼
+          Interview Configuration
+      (Role + Company + Perspective)
+                      │
+                      ▼
+        Google Gemini 2.5 Flash
+      Generates Interview Questions
+                      │
+                      ▼
+              Candidate Answers
+                      │
+                      ▼
+        Google Gemini Evaluation
+                      │
+                      ▼
+          Structured JSON Response
+                      │
+                      ▼
+         Interactive Dashboard
+```
+
+---
+
+# 📂 Project Structure
+
+```
+SkillSprintAI/
+
+│
+├── app/
+│   │
+│   ├── config/
+│   │
+│   ├── ui/
+│   │   ├── components/
+│   │   └── pages/
+│   │
+│   └── utils/
+│
+├── main.py
+├── requirements.txt
+└── README.md
+```
+
+---
+
+# 🛠 Tech Stack
+
+### Frontend
+
+- Streamlit
+
+### Backend
+
+- Python
+
+### AI
+
+- Google Gemini 2.5 Flash
+
+### Data Visualization
+
+- Plotly
+
+### Libraries
+
+- pdfplumber
+- python-dotenv
+- google-generativeai
+- streamlit
+- plotly
+
+---
+
+# 🚀 Installation
 
 Clone the repository
 
 ```bash
-git clone https://github.com/Arshpreet1605/SkillSprintAI.git
+git clone https://github.com/YOUR_USERNAME/SkillSprintAI.git
 ```
 
-Go to the project directory
+Move into the project
 
 ```bash
 cd SkillSprintAI
@@ -128,6 +277,12 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
+Create a `.env`
+
+```env
+GEMINI_API_KEY=YOUR_API_KEY
+```
+
 Run the application
 
 ```bash
@@ -136,66 +291,56 @@ streamlit run main.py
 
 ---
 
-## 🗺️ Development Roadmap
+# 💡 Future Improvements
 
-| Sprint | Status | Description |
-|---------|--------|-------------|
-| Sprint 1 | ✅ Completed | Project Foundation & UI |
-| Sprint 2 | 🔄 In Progress | Resume Parsing & Skill Extraction |
-| Sprint 3 | ⏳ Planned | AI Interview Question Generator |
-| Sprint 4 | ⏳ Planned | Interactive Interview Simulation |
-| Sprint 5 | ⏳ Planned | AI Evaluation Engine |
-| Sprint 6 | ⏳ Planned | Analytics Dashboard |
-| Sprint 7 | ⏳ Planned | Authentication & Deployment |
-
----
-
-## 🎯 Project Goals
-
-SkillSprint AI aims to:
-
-- Help students prepare for technical interviews.
-- Generate personalized interview experiences.
-- Analyze resumes intelligently.
-- Provide detailed AI-based feedback.
-- Track interview performance over time.
-- Build confidence through continuous practice.
+- Voice Interview
+- Video Interview
+- Coding Round
+- Live Code Editor
+- ATS Resume Score
+- PDF Performance Report
+- Interview History
+- Authentication
+- Cloud Deployment
+- Multi-language Support
+- AI Career Coach
 
 ---
 
-## 🤝 Contributors
+# 🤝 Contributing
 
-- **Arshpreet Kaur** — Project Lead & Developer
-- Team Members *(to be added)*
+Contributions are welcome!
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request
 
 ---
 
-## 📜 License
+# 📜 License
 
 This project is licensed under the MIT License.
 
 ---
 
-## ⭐ Future Scope
+# 👩‍💻 Author
 
-- Voice-based AI Interviews
-- Coding Interview Module
-- Company-Specific Interview Preparation
-- Resume Score Prediction
-- AI Career Recommendations
-- Interview Progress Tracking
-- Leaderboard & Gamification
+**Arshpreet Kaur**
 
----
+M.Sc. Data Science | Student | Data Science Enthusiast
 
-## 💡 Why SkillSprint AI?
+ **Priya**
+ 
+B.E(IT) | Student | AI/ML Enthusiast
 
-Technical interviews often require structured practice, personalized feedback, and confidence-building.
-
-SkillSprint AI combines AI-powered resume understanding, intelligent interview generation, and performance analytics into one unified platform, making interview preparation more practical, personalized, and effective.
+GitHub:
+https://github.com/Arshpreet1605
 
 ---
 
-<p align="center">
-Made with ❤️ using Python & Streamlit
-</p>
+<div align="center">
+
+⭐ If you like this project, consider giving it a Star!
+
+</div>
