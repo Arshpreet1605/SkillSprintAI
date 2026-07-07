@@ -8,7 +8,6 @@ Generate company-specific mock interviews, answer AI-generated questions, receiv
 
 <img src="https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge"/>
 <img src="https://img.shields.io/badge/Streamlit-1.x-red?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/Google-Gemini%202.5%20Flash-green?style=for-the-badge"/>
 <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge"/>
 <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge"/>
 
