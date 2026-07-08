@@ -8,6 +8,9 @@ Handles communication with the Gemini API:
 
 import os
 import json
+import random
+import pandas as pd
+from pathlib import Path
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -16,9 +19,85 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 model = genai.GenerativeModel("gemini-2.5-flash")
+DATASET_PATH = (
+    Path(__file__).resolve().parents[2]
+    / "data"
+    / "interview_question_bank.csv"
+)
 
+QUESTION_BANK = pd.read_csv(DATASET_PATH).fillna("")
+
+
+def get_dataset_questions(role: str, company: str, perspectives: list[str], limit: int = 5) -> list[str]:
+    """
+    Returns interview questions from the local dataset with progressive fallback.
+    """
+
+    df = QUESTION_BANK.copy()
+
+    # Normalize text
+    df["Company"] = df["Company"].str.lower()
+    df["Role"] = df["Role"].str.lower()
+    df["Perspective"] = df["Perspective"].str.lower()
+
+    company = company.lower()
+    role = role.lower()
+    perspectives = [p.lower() for p in perspectives]
+
+    # ------------------------
+    # Attempt 1
+    # Company + Role + Perspective
+    # ------------------------
+
+    result = df[
+        (df["Company"] == company)
+        &
+        (df["Role"].str.contains(role, na=False))
+        &
+        (df["Perspective"].isin(perspectives))
+    ]
+
+    # ------------------------
+    # Attempt 2
+    # Company + Perspective
+    # ------------------------
+
+    if len(result) < limit:
+
+        result = df[
+            (df["Company"] == company)
+            &
+            (df["Perspective"].isin(perspectives))
+        ]
+
+    # ------------------------
+    # Attempt 3
+    # Perspective only
+    # ------------------------
+
+    if len(result) < limit:
+
+        result = df[
+            df["Perspective"].isin(perspectives)
+        ]
+
+    questions = result["Question"].drop_duplicates().tolist()
+    random.shuffle(questions)
+
+    return questions[:limit]
 
 def generate_interview_questions(resume_text: str, role: str, experience: str,company:str,perspectives:list[str]) -> list[str]:
+    # Try to fetch questions from the local dataset first
+    dataset_questions = get_dataset_questions(
+        role=role,
+        company=company,
+        perspectives=perspectives,
+        limit=5
+    )
+
+    # If we already found 5 questions in the dataset, return them
+    if len(dataset_questions) >= 5:
+        return dataset_questions 
     """
     Returns a list of 5 interview question strings, tailored to the resume,
     target role, and experience level.
@@ -36,7 +115,7 @@ Target company: {company}
 Interview perspectives:
 {", ".join(perspectives)}
 
-Generate exactly FIVE interview questions.
+Generate exactly {5 - len(dataset_questions)} interview questions.
 
 The questions should be tailored to:
 
@@ -59,9 +138,7 @@ Distribute the five questions naturally across the selected interview perspectiv
 
 The interview style should resemble the interview process of the selected company.
 
-Respond with ONLY a valid JSON array of 5 strings, nothing else.
-Example format: ["question 1", "question 2", "question 3", "question 4", "question 5"]
-"""
+Respond with ONLY a valid JSON array containing exactly the requested number of interview questions. Do not include any explanation or markdown."""
     response = model.generate_content(prompt)
     raw = response.text.strip()
 
@@ -75,8 +152,8 @@ Example format: ["question 1", "question 2", "question 3", "question 4", "questi
     except json.JSONDecodeError:
         questions = [raw]  # fallback: treat whole response as one question
 
-    return questions
-
+    final_questions = (dataset_questions + questions)[:5]
+    return final_questions
 
 def evaluate_interview_answers(resume_text: str, role: str, experience: str,company:str,perspectives:list[str], qa_pairs: list[dict]) -> dict:
     """
